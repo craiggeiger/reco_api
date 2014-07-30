@@ -5,9 +5,8 @@
 var express    = require('express');
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
-
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost/recommender'); // connect to our database
+//mongoose.connect('mongodb://localhost/recommender'); // connect to our database
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
