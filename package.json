@@ -15,10 +15,13 @@
 	"keywords": [
 		"example",
 		"heroku"
-	],
+		],
 	"author": "jane-doe",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/craiggeiger/reco_api/issues"
-	}
+	},
+  	"engines": {
+    	"node": "0.10.29"
+  	}
 }
