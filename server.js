@@ -6,7 +6,7 @@ var express    = require('express');
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://craig_geiger:onl1n3MHQAPI!@kahana.mongohq.com:10086/reco_api'); // connect to our database
+mongoose.connect('mongodb://craig_geiger:onl1n3MHQAPI!@kahana.mongohq.com:10086/reco_api'); // connect to our mongo database
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
