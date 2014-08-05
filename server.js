@@ -84,6 +84,12 @@ router.route('/phones')
 
 	// get all the phones (accessed at GET http://localhost:8080/api/phones)
 	.get(function(req, res) {
+
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+		
 		Phone.find(function(err, phones) {
 			if (err)
 				res.send(err);
@@ -129,6 +135,12 @@ router.route('/customers')
 
 	// get all the customers (accessed at GET http://localhost:8080/api/customers)
 	.get(function(req, res) {
+
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+
 		Customer.find(function(err, customers) {
 			if (err)
 				res.send(err);
@@ -144,6 +156,13 @@ router.route('/customers/:mdn')
 
 	// get the bear with that id (accessed at GET http://localhost:8080/api/cutomers/:mdn)
 	.get(function(req, res) {
+
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+
+
 		Customer.findOne({"mdn":req.params.mdn}, function(err, customer) {
 			if (err)
 				res.send(err);
@@ -193,6 +212,14 @@ router.route('/plans')
 
 	// get all the plans (accessed at GET http://localhost:8080/api/plans)
 	.get(function(req, res) {
+
+
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+
+
 		Plan.find(function(err, plans) {
 			if (err)
 				res.send(err);
