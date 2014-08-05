@@ -43,6 +43,8 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	res.json({ message: 'welcome to our api!' });	
 });
 
@@ -212,9 +214,14 @@ Route: WURFL
 // WURFL Device Detection
 router.route('/wurfl/')
 
-
 	// get the bear with that id (accessed at GET http://localhost:8080/api/wurfl/)
 	.get(function(req, res) {
+
+
+		res.header("Access-Control-Allow-Origin", "*");
+  		res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
+
 		var configuration = new config.WurflCloudConfig(WURFL_API_KEY);
 		var brand;
 		var result_capabilities = {};
