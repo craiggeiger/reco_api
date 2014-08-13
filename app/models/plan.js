@@ -6,11 +6,15 @@ var Schema       = mongoose.Schema;
 var PlanSchema   = new Schema({
 	name: String,
 	description: String,
+	date: Date,
 	carrier: String,
-	price: String,
-	minPerMonth: Number, // minutes
-	dataPerMonth: Number, // in GB
-	txtPerMonth: Number // number
+	contractTerm: Number, // yrs
+	baseMonthlyFee: Number,
+	smartphoneFee: Number,
+	minPerMonth: Number, // minutes -1 = unlimited
+	dataPerMonth: Number, // in GB -1 = unlimited
+	txtPerMonth: Number, // number -1 = unlimited
+	speed: String
 });
 
 module.exports = mongoose.model('Plan', PlanSchema);

@@ -1,3 +1,18 @@
+/*
+
+
+
+Based off of...
+http://scotch.io/tutorials/javascript/build-a-restful-api-using-node-and-express-4
+
+
+
+
+
+*/
+
+
+
 // BASE SETUP
 // =============================================================================
 
@@ -191,13 +206,19 @@ router.route('/plans')
 	.post(function(req, res) {
 		
 		var plan = new Plan(); 		// create a new instance of the Plan model
+
+
 		plan.name = req.body.name;
 		plan.description = req.body.description;
+		plan.date = req.body.date;
 		plan.carrier = req.body.carrier;
-		plan.price = req.body.price;
+		plan.contractTerm = req.body.contractTerm;
+		plan.baseMonthlyFee = req.body.baseMonthlyFee;
+		plan.smartphoneFee = req.body.smartphoneFee;
 		plan.minPerMonth = req.body.minPerMonth;
-		plan.dataPerMonth = req.body.dataPerMonth; // GB
+		plan.dataPerMonth = req.body.dataPerMonth;
 		plan.txtPerMonth = req.body.txtPerMonth;
+		plan.speed = req.body.speed;
 		
 
 		// save the phone and check for errors
@@ -220,7 +241,8 @@ router.route('/plans')
 
 
 
-		Plan.find(function(err, plans) {
+		// .find({search-spec}, [return field array], {options}, callback)
+		Plan.find(null, null, { sort: { 'carrier': 1 } }, function(err, plans) {
 			if (err)
 				res.send(err);
 
