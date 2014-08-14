@@ -237,6 +237,7 @@ router.route('/plans')
 		plan.dataPerMonth = req.body.dataPerMonth;
 		plan.txtPerMonth = req.body.txtPerMonth;
 		plan.speed = req.body.speed;
+		plan.numRequiredDevices = req.body.numRequiredDevices;
 		
 
 		// save the phone and check for errors
@@ -286,12 +287,21 @@ router.route('/plans/:udid')
 				res.send(err);
 			minDataGBPerMonth = Math.ceil(customer.totalDataPerMonth / 1000);
 			maxDataGBPerMonth = Math.ceil(minDataGBPerMonth * 2);
+
+			// how many phones are tied to this line/account
+			var numPhones = 1;
 			
 			// now get plans with data greater than monthly GB
 			// and less than 2x
 			var query = Plan.find({});
-			query.where('dataPerMonth').gte(minDataGBPerMonth);
-			query.where('dataPerMonth').lte(maxDataGBPerMonth);
+			
+			query.where('numRequiredDevices', 1);
+			query.or([{ dataPerMonth: { $gte: minDataGBPerMonth, $lte: maxDataGBPerMonth } }, { dataPerMonth: -1 }]);
+			//query.where('dataPerMonth').gte(minDataGBPerMonth);
+			//query.where('dataPerMonth').lte(maxDataGBPerMonth).or(0);
+			//query.where('dataPerMonth').lte(0);
+			
+
 			query.sort('dataPerMonth');
 
 			var recommendations = {"minDataGBPerMonth":minDataGBPerMonth, "maxDataGBPerMonth": maxDataGBPerMonth }

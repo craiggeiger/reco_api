@@ -14,7 +14,8 @@ var PlanSchema   = new Schema({
 	minPerMonth: Number, // minutes -1 = unlimited
 	dataPerMonth: Number, // in GB -1 = unlimited
 	txtPerMonth: Number, // number -1 = unlimited
-	speed: String
+	speed: String,
+	numRequiredDevices: Number
 });
 
 module.exports = mongoose.model('Plan', PlanSchema);
