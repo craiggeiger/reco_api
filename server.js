@@ -167,7 +167,7 @@ router.route('/customers')
 
 // on routes that end in /customers/:MDN
 // ----------------------------------------------------
-router.route('/customers/:mdn')
+router.route('/customers/:udid')
 
 	// get the bear with that id (accessed at GET http://localhost:8080/api/cutomers/:mdn)
 	.get(function(req, res) {
@@ -178,7 +178,7 @@ router.route('/customers/:mdn')
 
 
 
-		Customer.findOne({"mdn":req.params.mdn}, function(err, customer) {
+		Customer.findOne({"udid":req.params.mdn}, function(err, customer) {
 			if (err)
 				res.send(err);
 			res.json(customer);
@@ -211,9 +211,7 @@ router.route('/plans')
 		plan.name = req.body.name;
 		plan.description = req.body.description;
 		plan.date = req.body.date;
-		plan.carrier = req.body.carrier;
-		plan.contractTerm = req.body.contractTerm;
-		plan.baseMonthlyFee = req.body.baseMonthlyFee;
+		plan.carrier = req.body.carrier; yFee;
 		plan.smartphoneFee = req.body.smartphoneFee;
 		plan.minPerMonth = req.body.minPerMonth;
 		plan.dataPerMonth = req.body.dataPerMonth;
@@ -250,6 +248,24 @@ router.route('/plans')
 		});
 	});
 
+
+router.route('/plans/:udid')
+
+	// get the bear with that id (accessed at GET http://localhost:8080/api/cutomers/:mdn)
+	.get(function(req, res) {
+
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+
+
+		Plan.find(null, null, { sort: { 'carrier': 1 }, limit: 5 }, function(err, plans) {
+			if (err)
+				res.send(err);
+			res.json(plans);
+		});
+	});
 
 /*
 =============================================================
