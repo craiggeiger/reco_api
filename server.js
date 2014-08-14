@@ -130,13 +130,31 @@ router.route('/customers')
 	.post(function(req, res) {
 		
 		var customer = new Customer(); 		// create a new instance of the Customer model
+
+		customer.udid = req.body.udid;
 		customer.mdn = req.body.mdn;
-		customer.device = req.body.device;
+		customer.deviceModel = req.body.deviceModel;
+		customer.deviceBrand = req.body.deviceBrand;
+		customer.deviceOS = req.body.deviceOS;
+		customer.deviceOSVersion = req.body.deviceOSVersion;
+		customer.WURFLModel = req.body.WURFLModel;
+		customer.WURFLMarketingName = req.body.WURFLMarketingName;
+		customer.WURFLReleaseDate = req.body.WURFLReleaseDate;
+
 		customer.carrier = req.body.carrier;
 		customer.minPerMonth = req.body.minPerMonth;
-		customer.dataPerMonth = req.body.dataPerMonth; // GB
+		customer.dataPerMonth = req.body.dataPerMonth;
+		customer.totalDataPerMonth = req.body.totalDataPerMonth;
 		customer.txtPerMonth = req.body.txtPerMonth;
-		customer.segment = req.body.segment;
+		customer.lastReboot = req.body.lastReboot;
+		customer.insertDate = Date.now();
+
+		customer.apps = req.body.apps;
+
+
+
+
+
 
 		// save the phone and check for errors
 		customer.save(function(err) {
@@ -259,12 +277,43 @@ router.route('/plans/:udid')
 		res.header('Access-Control-Allow-Headers', 'Content-Type');
 
 
+		// get customer plan details to add as clauses
+		var dataGBPerMonth; 
+		Customer.findOne({"udid":req.params.udid}, function(err, customer) {
+			if (err)
+				res.send(err);
+			console.log(customer.totalDataPerMonth);
+			minDataGBPerMonth = Math.ceil(customer.totalDataPerMonth / 1000);
+			maxDataGBPerMonth = Math.ceil(minDataGBPerMonth * 2);
+			
+			// now get plans with data greater than monthly GB
+			var query = Plan.find({});
+			query.where('dataPerMonth').gte(minDataGBPerMonth);
+			query.where('dataPerMonth').lte(maxDataGBPerMonth);
+			//query.sort('carrier',1);
 
-		Plan.find(null, null, { sort: { 'carrier': 1 }, limit: 5 }, function(err, plans) {
+			query.exec(function (err, plans) {
+			  if (err)
+					res.send(err);
+				res.json(plans);
+			});
+
+		});
+
+		
+
+
+		
+
+
+		// .find({search-spec}, [return field array], {options}, callback)
+		/*
+		Plan.find({"dataPerMonth":req.params.udid}, null, { sort: { 'carrier': 1 }, limit: 5 }, function(err, plans) {
 			if (err)
 				res.send(err);
 			res.json(plans);
 		});
+		*/
 	});
 
 /*
