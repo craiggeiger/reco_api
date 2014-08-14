@@ -269,7 +269,7 @@ router.route('/plans')
 
 router.route('/plans/:udid')
 
-	// get the bear with that id (accessed at GET http://localhost:8080/api/cutomers/:mdn)
+	// return the recommended plans based on UDID as a param
 	.get(function(req, res) {
 
 		res.header('Access-Control-Allow-Origin', '*');
@@ -282,20 +282,26 @@ router.route('/plans/:udid')
 		Customer.findOne({"udid":req.params.udid}, function(err, customer) {
 			if (err)
 				res.send(err);
-			console.log(customer.totalDataPerMonth);
 			minDataGBPerMonth = Math.ceil(customer.totalDataPerMonth / 1000);
 			maxDataGBPerMonth = Math.ceil(minDataGBPerMonth * 2);
 			
 			// now get plans with data greater than monthly GB
+			// and less than 2x
 			var query = Plan.find({});
 			query.where('dataPerMonth').gte(minDataGBPerMonth);
 			query.where('dataPerMonth').lte(maxDataGBPerMonth);
-			//query.sort('carrier',1);
+			query.sort('dataPerMonth');
+
+			var recommendations = {"minDataGBPerMonth":minDataGBPerMonth, "maxDataGBPerMonth": maxDataGBPerMonth }
+
+			
+
 
 			query.exec(function (err, plans) {
 			  if (err)
 					res.send(err);
-				res.json(plans);
+				var combinedReturn = {"recommendationInfo": recommendations, "customerInfo":customer, "planInfo":plans};
+				res.json(combinedReturn);
 			});
 
 		});
