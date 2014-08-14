@@ -229,7 +229,9 @@ router.route('/plans')
 		plan.name = req.body.name;
 		plan.description = req.body.description;
 		plan.date = req.body.date;
-		plan.carrier = req.body.carrier; yFee;
+		plan.carrier = req.body.carrier;
+		plan.contractTerm = req.body.contractTerm;
+		plan.baseMonthlyFee = req.body.baseMonthlyFee;
 		plan.smartphoneFee = req.body.smartphoneFee;
 		plan.minPerMonth = req.body.minPerMonth;
 		plan.dataPerMonth = req.body.dataPerMonth;
@@ -304,7 +306,7 @@ router.route('/plans/:udid')
 				res.json(combinedReturn);
 			});
 
-			
+
 
 		});
 
