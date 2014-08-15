@@ -129,6 +129,10 @@ router.route('/customers')
 	// create a customer (accessed at POST http://localhost:8080/api/customers)
 	.post(function(req, res) {
 		
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+
 		var customer = new Customer(); 		// create a new instance of the Customer model
 
 		customer.udid = req.body.udid;
