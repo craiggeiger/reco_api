@@ -272,7 +272,7 @@ router.route('/plans')
 
 router.route('/plans/:udid')
 
-	// return the recommended plans based on UDID as a param
+	// return the recommended plan(s) based on UDID as a param
 	.get(function(req, res) {
 
 		res.header('Access-Control-Allow-Origin', '*');
@@ -290,12 +290,21 @@ router.route('/plans/:udid')
 
 			// how many phones are tied to this line/account
 			var numPhones = 1;
+
+			// do we need a quality network?
+			var networkQuality = false;
+			if (customer.minPerMonth > 1000) { networkQuality = true; }
+			if (customer.txtPerMonth > 500) { networkQuality = true; }
+			if (customer.dataPerMonth > 1000) { networkQuality = true; }
 			
 			// now get plans with data greater than monthly GB
 			// and less than 2x
 			var query = Plan.find({});
 			
-			query.where('numRequiredDevices', 1);
+			query.where('numRequiredDevices', numPhones);
+			if (networkQuality) {
+				query.where('carrier').in(['AT&T', 'VZW']);
+			}
 			query.or([{ dataPerMonth: { $gte: minDataGBPerMonth, $lte: maxDataGBPerMonth } }, { dataPerMonth: -1 }]);
 			//query.where('dataPerMonth').gte(minDataGBPerMonth);
 			//query.where('dataPerMonth').lte(maxDataGBPerMonth).or(0);
@@ -304,7 +313,7 @@ router.route('/plans/:udid')
 
 			query.sort('dataPerMonth');
 
-			var recommendations = {"minDataGBPerMonth":minDataGBPerMonth, "maxDataGBPerMonth": maxDataGBPerMonth }
+			var recommendations = {"minDataGBPerMonth":minDataGBPerMonth, "maxDataGBPerMonth": maxDataGBPerMonth, "networkQuality": networkQuality}
 
 			
 
